@@ -31,12 +31,12 @@ func (userService *UserService) CreateUser(c *gin.Context, request requests.Regi
 	if request.Image != nil {
 		fileIdentifier := fmt.Sprintf("User Image %s", request.Name)
 
-		resp, err := handlemedia.UploadImage(c, request.Image, fileIdentifier)
+		url, err := handlemedia.UploadImage(c, request.Image, fileIdentifier)
 
 		if err != nil {
 			return response, err
 		}
-		image = resp.URL
+		image = url
 	}
 
 	newUser := models.User{

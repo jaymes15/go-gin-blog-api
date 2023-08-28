@@ -1,29 +1,28 @@
 package handlemedia
 
 import (
+	storjservice "blog/pkg/cloudStorageServices/storjService"
 	"mime/multipart"
 	"os"
 
-	"github.com/cloudinary/cloudinary-go/api/uploader"
 	"github.com/gin-gonic/gin"
 )
 
-func UploadImage(c *gin.Context, image *multipart.FileHeader, fileIdentifier string) (*uploader.UploadResult, error) {
-	var res *uploader.UploadResult
+func UploadImage(c *gin.Context, image *multipart.FileHeader, fileIdentifier string) (string, error) {
 
 	err := c.SaveUploadedFile(image, image.Filename)
 	if err != nil {
-		return res, err
+		return "", err
 	}
 
-	resp, err := UploadToCloudinary(c, image, fileIdentifier)
-
+	// resp, err := cloudinaryservice.UploadToCloudinary(c, image, fileIdentifier)
+	url, err := storjservice.SaveImageToStorj(image.Filename, fileIdentifier)
 	os.Remove(image.Filename)
 
 	if err != nil {
-		return res, err
+		return "", err
 	}
 
-	return resp, nil
+	return url, nil
 
 }
