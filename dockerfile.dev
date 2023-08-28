@@ -1,0 +1,21 @@
+FROM golang:1.20.6
+
+
+WORKDIR /app
+        
+COPY go.mod go.sum ./
+        
+RUN go mod download
+RUN go mod tidy
+RUN go install -mod=mod github.com/githubnemo/CompileDaemon
+
+COPY . .
+
+RUN chmod +x /app/*
+
+
+EXPOSE 8081
+        
+
+CMD CompileDaemon --build="go build main.go" --command="./main serve"
+
