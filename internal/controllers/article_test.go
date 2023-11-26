@@ -8,6 +8,14 @@ import (
 	"testing"
 )
 
+type MockStarWars struct{}
+
+func (m *MockStarWars) GetAllCast() {
+	// Mocked behavior for GetAllCast in your test scenario
+	// Define behavior or assertions as needed for testing purposes
+	fmt.Println("::::::::ALLLLLLL")
+}
+
 type userArticle struct {
 	ID    int    `json:"ID"`
 	Image string `json:"Image"`
@@ -37,10 +45,12 @@ type AppData struct {
 // Test unauthenticated user can GET
 // all articles
 func TestUnAuthenticatedUserCanGetAllArticles(t *testing.T) {
+	mockStarWars := &MockStarWars{}
 
 	r := getRouter(false)
+	controller := NewArticleController(mockStarWars)
 
-	r.GET("/articles", NewArticleController().Show)
+	r.GET("/articles", controller.Show)
 
 	// Create a request to send to the above route
 	req, _ := http.NewRequest("GET", "/articles", nil)

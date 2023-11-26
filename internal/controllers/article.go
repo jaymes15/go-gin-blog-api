@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	starwars "blog/internal/integrations"
 	"blog/internal/requests"
 	"blog/internal/services"
 	"log"
@@ -13,15 +14,18 @@ import (
 
 type Controller struct {
 	articleService services.ArticleServiceInterface
+	starWars       starwars.StarWarsInterface
 }
 
-func NewArticleController() *Controller {
+func NewArticleController(starWars starwars.StarWarsInterface) *Controller {
 	return &Controller{
 		articleService: services.NewArticleService(),
+		starWars:       starWars,
 	}
 }
 
 func (controllers *Controller) Show(c *gin.Context) {
+	controllers.starWars.GetAllCast()
 	c.JSON(http.StatusOK, gin.H{
 		"featuredArticles": controllers.articleService.GetFeaturedArticles(),
 		"storiesArticles":  controllers.articleService.GetStoriesArticles(),

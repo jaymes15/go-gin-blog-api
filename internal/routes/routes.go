@@ -2,13 +2,14 @@ package routes
 
 import (
 	"blog/internal/controllers"
+	starwars "blog/internal/integrations"
 	"blog/internal/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
 
 func Routes(router *gin.Engine) {
-	articleController := controllers.NewArticleController()
+	articleController := controllers.NewArticleController(starwars.NewStarWarsRespository())
 	userController := controllers.NewAuthController()
 
 	guestGroup := router.Group("/")

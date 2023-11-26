@@ -14,7 +14,7 @@ COPY . .
 RUN chmod +x /app/*
 
 
-EXPOSE 8081
+EXPOSE 8082
         
 
 CMD CompileDaemon --build="go build main.go" --command="./main serve"
