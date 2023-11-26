@@ -19,7 +19,7 @@ import (
 	"storj.io/uplink/edge"
 )
 
-const defaultExpiration = 7 * 24 * time.Hour
+const defaultExpiration = 2 * 60 * time.Second
 
 // UploadAndDownloadData uploads the specified data to the specified key in the
 // specified bucket, using the specified Satellite, API key, and passphrase.
@@ -48,7 +48,7 @@ func UploadAndDownloadData(ctx context.Context,
 	// Intitiate the upload of our Object to the specified bucket and key.
 	upload, err := project.UploadObject(ctx, bucketName, uploadKey, &uplink.UploadOptions{
 		// It's possible to set an expiration date for data.
-		Expires: time.Now().Add(defaultExpiration),
+		//Expires: time.Now().Add(defaultExpiration),
 	})
 	if err != nil {
 		return fmt.Errorf("could not initiate upload: %v", err)
@@ -107,7 +107,7 @@ func CreatePublicSharedLink(ctx context.Context, accessGrant, bucketName, object
 			// only allow downloads
 			AllowDownload: true,
 			// this allows to automatically cleanup the access grants
-			NotAfter: time.Now().Add(defaultExpiration),
+			//NotAfter: time.Now().Add(defaultExpiration),
 		}, uplink.SharePrefix{
 			Bucket: bucketName,
 			Prefix: objectKey,
